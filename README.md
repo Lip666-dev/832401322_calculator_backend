@@ -1,22 +1,22 @@
-# Calculator Backend — Front-End/Back-End Separated Calculator System
+﻿# Calculator Backend 鈥?Front-End/Back-End Separated Calculator System
 
 Backend service of the *First Assignment* calculator project (student ID **832401322**).
 It exposes a JSON API over HTTP, parses and evaluates mathematical expressions
 safely, and persists every successful calculation in a SQLite database.
 
-* **No third-party runtime dependency** — Python standard library only
+* **No third-party runtime dependency** 鈥?Python standard library only
   (`http.server`, `sqlite3`, `json`, `math`, `re`).
-* **No `eval` / `exec`** — expressions are handled by a hand-written tokenizer
+* **No `eval` / `exec`** 鈥?expressions are handled by a hand-written tokenizer
   and recursive-descent parser, so user input is never executed as code.
-* **The front end never calculates** — it sends an expression and displays the
+* **The front end never calculates** 鈥?it sends an expression and displays the
   result that this service returns.
 
 | | |
 |---|---|
-| Front-end repository | `https://github.com/<your-account>/832401322_calculator_frontend` |
-| Back-end repository | `https://github.com/<your-account>/832401322_calculator_backend` |
+| Front-end repository | `https://github.com/Lip666-dev/832401322_calculator_frontend` |
+| Back-end repository | `https://github.com/Lip666-dev/832401322_calculator_backend` |
 | Code standard | [codestyle.md](codestyle.md) |
-| Assignment blog | `https://blog.csdn.net/<your-account>/article/<id>` |
+| Assignment blog | `https://blog.csdn.net/Lip666-dev/article/<id>` |
 
 ---
 
@@ -34,34 +34,34 @@ safely, and persists every successful calculation in a SQLite database.
 
 ```text
 832401322_calculator_backend/
-├── src/
-│   ├── controller/            # HTTP adapters
-│   │   ├── api_controller.py  # one method per endpoint
-│   │   ├── request_context.py # transport independent request object
-│   │   └── router.py          # method + path -> handler
-│   ├── service/               # use cases
-│   │   ├── calculator_service.py
-│   │   ├── history_service.py
-│   │   └── statistics_service.py
-│   ├── model/                 # persistence
-│   │   ├── database.py        # connections + schema
-│   │   ├── entities.py        # CalculationRecord
-│   │   └── history_repository.py
-│   ├── calculator.py          # tokenizer, parser, evaluator, base conversion
-│   ├── validation.py          # request payload validation
-│   ├── errors.py              # error types -> HTTP status codes
-│   ├── config.py              # settings
-│   └── server.py              # entry point: python -m src.server
-├── tests/
-│   ├── test_calculator.py     # parser, evaluator, error paths, guard rails
-│   ├── test_repository.py     # SQLite behaviour
-│   └── test_api.py            # end-to-end HTTP tests
-├── data/                      # created at runtime, git-ignored
-├── init_db.py                 # database initialisation helper
-├── run.py                     # convenience launcher
-├── requirements.txt           # empty on purpose (standard library only)
-├── codestyle.md
-└── README.md
+鈹溾攢鈹€ src/
+鈹?  鈹溾攢鈹€ controller/            # HTTP adapters
+鈹?  鈹?  鈹溾攢鈹€ api_controller.py  # one method per endpoint
+鈹?  鈹?  鈹溾攢鈹€ request_context.py # transport independent request object
+鈹?  鈹?  鈹斺攢鈹€ router.py          # method + path -> handler
+鈹?  鈹溾攢鈹€ service/               # use cases
+鈹?  鈹?  鈹溾攢鈹€ calculator_service.py
+鈹?  鈹?  鈹溾攢鈹€ history_service.py
+鈹?  鈹?  鈹斺攢鈹€ statistics_service.py
+鈹?  鈹溾攢鈹€ model/                 # persistence
+鈹?  鈹?  鈹溾攢鈹€ database.py        # connections + schema
+鈹?  鈹?  鈹溾攢鈹€ entities.py        # CalculationRecord
+鈹?  鈹?  鈹斺攢鈹€ history_repository.py
+鈹?  鈹溾攢鈹€ calculator.py          # tokenizer, parser, evaluator, base conversion
+鈹?  鈹溾攢鈹€ validation.py          # request payload validation
+鈹?  鈹溾攢鈹€ errors.py              # error types -> HTTP status codes
+鈹?  鈹溾攢鈹€ config.py              # settings
+鈹?  鈹斺攢鈹€ server.py              # entry point: python -m src.server
+鈹溾攢鈹€ tests/
+鈹?  鈹溾攢鈹€ test_calculator.py     # parser, evaluator, error paths, guard rails
+鈹?  鈹溾攢鈹€ test_repository.py     # SQLite behaviour
+鈹?  鈹斺攢鈹€ test_api.py            # end-to-end HTTP tests
+鈹溾攢鈹€ data/                      # created at runtime, git-ignored
+鈹溾攢鈹€ init_db.py                 # database initialisation helper
+鈹溾攢鈹€ run.py                     # convenience launcher
+鈹溾攢鈹€ requirements.txt           # empty on purpose (standard library only)
+鈹溾攢鈹€ codestyle.md
+鈹斺攢鈹€ README.md
 ```
 
 ## 3. Runtime environment
@@ -74,7 +74,7 @@ safely, and persists every successful calculation in a SQLite database.
 ## 4. Installation
 
 ```bash
-git clone https://github.com/<your-account>/832401322_calculator_backend.git
+git clone https://github.com/Lip666-dev/832401322_calculator_backend.git
 cd 832401322_calculator_backend
 
 # optional but recommended
@@ -128,11 +128,11 @@ Startup output lists the bound address, the database file and every route.
 | `--host` | `CALC_HOST` | `127.0.0.1` | Interface to bind |
 | `--port` | `CALC_PORT` | `8000` | TCP port |
 | `--db` | `CALC_DB_PATH` | `data/calculator.db` | SQLite file |
-| — | `CALC_CORS_ORIGIN` | `*` | `Access-Control-Allow-Origin` value |
+| 鈥?| `CALC_CORS_ORIGIN` | `*` | `Access-Control-Allow-Origin` value |
 
-Guard rails (also in `src/config.py`): expression length ≤ 200 characters,
-≤ 256 tokens, nesting depth ≤ 64, `fact()` argument ≤ 170, result magnitude
-≤ 1e308, request body ≤ 64 KiB.
+Guard rails (also in `src/config.py`): expression length 鈮?200 characters,
+鈮?256 tokens, nesting depth 鈮?64, `fact()` argument 鈮?170, result magnitude
+鈮?1e308, request body 鈮?64 KiB.
 
 ## 7. API
 
@@ -203,13 +203,13 @@ curl -X POST http://127.0.0.1:8000/api/convert/base -H "Content-Type: applicatio
 
 | Feature | Examples |
 | --- | --- |
-| Arithmetic | `+` `-` `*` `/` `%` (also accepts `×` `÷` `−`) |
-| Precedence & parentheses | `1+2*3` → 7, `(1+2)*3` → 9 |
+| Arithmetic | `+` `-` `*` `/` `%` (also accepts `脳` `梅` `鈭抈) |
+| Precedence & parentheses | `1+2*3` 鈫?7, `(1+2)*3` 鈫?9 |
 | Unary signs | `-5+8`, `3*-2`, `2^-3`, `--5` |
 | Decimals & exponents | `1.5*4`, `.5+.5`, `1e3+1` |
 | Power / factorial | `2^10`, `2**10`, `5!`, `fact(6)`, `pow(2,10)` |
 | Functions | `sqrt` `abs` `sin` `cos` `tan` `asin` `acos` `atan` `ln` `log` `log2` `exp` `floor` `ceil` `round` `min` `max` `pow` `fact` |
-| Constants | `pi`, `e`, `tau` (also `π`) |
+| Constants | `pi`, `e`, `tau` (also `蟺`) |
 
 `log(x)` is base 10; `log(x, b)` uses an explicit base. Trigonometric functions
 work in radians. `%` follows Python semantics for negative operands.
@@ -219,7 +219,7 @@ work in radians. `%` follows Python semantics for negative operands.
 The front end is a separate project and talks to this service over HTTP; it is
 not served by this service. Two supported setups:
 
-1. **Recommended** — serve the front-end folder with any static server and set
+1. **Recommended** 鈥?serve the front-end folder with any static server and set
    its API base URL to this backend:
 
    ```bash
@@ -229,10 +229,10 @@ not served by this service. Two supported setups:
    cd ../832401322_calculator_backend  && python run.py
    ```
 
-   In the front end, `src/js/config.js` → `API_BASE_URL` must be
+   In the front end, `src/js/config.js` 鈫?`API_BASE_URL` must be
    `http://127.0.0.1:8000`.
 
-2. **Opened from disk** (`file://`) — also works, because the API sends
+2. **Opened from disk** (`file://`) 鈥?also works, because the API sends
    `Access-Control-Allow-Origin: *` and answers `OPTIONS` preflight requests.
 
 When the backend is stopped, the front end still renders and accepts button
@@ -257,4 +257,4 @@ behaviour and a check that `eval`/`exec` never appear in the calculation module.
   proxy, or run it as a systemd service / Windows scheduled task.
 * Point `CALC_DB_PATH` at a persistent volume so history survives restarts.
 * For a public demo, the repository can be deployed as-is on any host that runs
-  Python 3.10+ (Render, Railway, PythonAnywhere, a VPS, …).
+  Python 3.10+ (Render, Railway, PythonAnywhere, a VPS, 鈥?.
