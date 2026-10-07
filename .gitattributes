@@ -1,0 +1,9 @@
+# Keep line endings consistent no matter which platform clones the repository.
+* text=auto eol=lf
+
+# Binary artefacts must never be normalised.
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
+*.db binary

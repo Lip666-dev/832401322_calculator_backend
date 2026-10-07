@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Project data: the SQLite database is created at runtime and never committed
+data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3
+
+# Tooling and editors
+.idea/
+.vscode/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+*.log
+
+# Local overrides
+.env
