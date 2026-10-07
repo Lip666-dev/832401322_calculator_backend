@@ -4,4 +4,6 @@
 # (http.server, sqlite3, json, math, re).  This keeps the project reproducible
 # and removes any risk of a "works on my machine" environment problem.
 #
-# Python 3.10 or newer is required (the code uses PEP 604 union types).
+# Python 3.8 or newer is required.  The code uses
+# `from __future__ import annotations` plus `typing.Union`, so it runs unchanged
+# on 3.8, 3.9, 3.10, 3.11, 3.12 and 3.13.

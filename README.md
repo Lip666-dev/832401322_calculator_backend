@@ -1,14 +1,14 @@
-﻿# Calculator Backend 鈥?Front-End/Back-End Separated Calculator System
+# Calculator Backend — Front-End/Back-End Separated Calculator System
 
 Backend service of the *First Assignment* calculator project (student ID **832401322**).
 It exposes a JSON API over HTTP, parses and evaluates mathematical expressions
 safely, and persists every successful calculation in a SQLite database.
 
-* **No third-party runtime dependency** 鈥?Python standard library only
+* **No third-party runtime dependency** — Python standard library only
   (`http.server`, `sqlite3`, `json`, `math`, `re`).
-* **No `eval` / `exec`** 鈥?expressions are handled by a hand-written tokenizer
+* **No `eval` / `exec`** — expressions are handled by a hand-written tokenizer
   and recursive-descent parser, so user input is never executed as code.
-* **The front end never calculates** 鈥?it sends an expression and displays the
+* **The front end never calculates** — it sends an expression and displays the
   result that this service returns.
 
 | | |
@@ -24,7 +24,7 @@ safely, and persists every successful calculation in a SQLite database.
 
 | Layer | Choice | Why |
 | --- | --- | --- |
-| Language | Python 3.10+ | Available everywhere, no build step |
+| Language | Python 3.8+ | Available everywhere, no build step |
 | HTTP | `http.server.ThreadingHTTPServer` | Zero dependencies, fully visible request handling |
 | Persistence | SQLite 3 (`sqlite3`) | File based, no server to install, ACID |
 | Expression engine | custom tokenizer + recursive-descent parser | Required safety: no `eval`, full control over errors |
@@ -34,40 +34,42 @@ safely, and persists every successful calculation in a SQLite database.
 
 ```text
 832401322_calculator_backend/
-鈹溾攢鈹€ src/
-鈹?  鈹溾攢鈹€ controller/            # HTTP adapters
-鈹?  鈹?  鈹溾攢鈹€ api_controller.py  # one method per endpoint
-鈹?  鈹?  鈹溾攢鈹€ request_context.py # transport independent request object
-鈹?  鈹?  鈹斺攢鈹€ router.py          # method + path -> handler
-鈹?  鈹溾攢鈹€ service/               # use cases
-鈹?  鈹?  鈹溾攢鈹€ calculator_service.py
-鈹?  鈹?  鈹溾攢鈹€ history_service.py
-鈹?  鈹?  鈹斺攢鈹€ statistics_service.py
-鈹?  鈹溾攢鈹€ model/                 # persistence
-鈹?  鈹?  鈹溾攢鈹€ database.py        # connections + schema
-鈹?  鈹?  鈹溾攢鈹€ entities.py        # CalculationRecord
-鈹?  鈹?  鈹斺攢鈹€ history_repository.py
-鈹?  鈹溾攢鈹€ calculator.py          # tokenizer, parser, evaluator, base conversion
-鈹?  鈹溾攢鈹€ validation.py          # request payload validation
-鈹?  鈹溾攢鈹€ errors.py              # error types -> HTTP status codes
-鈹?  鈹溾攢鈹€ config.py              # settings
-鈹?  鈹斺攢鈹€ server.py              # entry point: python -m src.server
-鈹溾攢鈹€ tests/
-鈹?  鈹溾攢鈹€ test_calculator.py     # parser, evaluator, error paths, guard rails
-鈹?  鈹溾攢鈹€ test_repository.py     # SQLite behaviour
-鈹?  鈹斺攢鈹€ test_api.py            # end-to-end HTTP tests
-鈹溾攢鈹€ data/                      # created at runtime, git-ignored
-鈹溾攢鈹€ init_db.py                 # database initialisation helper
-鈹溾攢鈹€ run.py                     # convenience launcher
-鈹溾攢鈹€ requirements.txt           # empty on purpose (standard library only)
-鈹溾攢鈹€ codestyle.md
-鈹斺攢鈹€ README.md
+├── src/
+│   ├── controller/            # HTTP adapters
+│   │   ├── api_controller.py  # one method per endpoint
+│   │   ├── request_context.py # transport independent request object
+│   │   └── router.py          # method + path -> handler
+│   ├── service/               # use cases
+│   │   ├── calculator_service.py
+│   │   ├── history_service.py
+│   │   └── statistics_service.py
+│   ├── model/                 # persistence
+│   │   ├── database.py        # connections + schema
+│   │   ├── entities.py        # CalculationRecord
+│   │   └── history_repository.py
+│   ├── calculator.py          # tokenizer, parser, evaluator, base conversion
+│   ├── validation.py          # request payload validation
+│   ├── errors.py              # error types -> HTTP status codes
+│   ├── config.py              # settings
+│   └── server.py              # entry point: python -m src.server
+├── tests/
+│   ├── test_calculator.py     # parser, evaluator, error paths, guard rails
+│   ├── test_repository.py     # SQLite behaviour
+│   └── test_api.py            # end-to-end HTTP tests
+├── data/                      # created at runtime, git-ignored
+├── init_db.py                 # database initialisation helper
+├── run.py                     # convenience launcher
+├── requirements.txt           # empty on purpose (standard library only)
+├── codestyle.md
+└── README.md
 ```
 
 ## 3. Runtime environment
 
-* Python **3.10 or newer** (`python --version`); the code uses `int | float`
-  union types.
+* Python **3.8 or newer** (`python --version`). Annotations are lazily
+  evaluated through `from __future__ import annotations` and unions use
+  `typing.Union`, so the service runs unchanged on 3.8 - 3.13; this also makes
+  it installable on older cloud images such as Ubuntu 20.04.
 * Any operating system: Windows, Linux, macOS.
 * About 1 MB of disk space plus the database file.
 
@@ -128,11 +130,11 @@ Startup output lists the bound address, the database file and every route.
 | `--host` | `CALC_HOST` | `127.0.0.1` | Interface to bind |
 | `--port` | `CALC_PORT` | `8000` | TCP port |
 | `--db` | `CALC_DB_PATH` | `data/calculator.db` | SQLite file |
-| 鈥?| `CALC_CORS_ORIGIN` | `*` | `Access-Control-Allow-Origin` value |
+| — | `CALC_CORS_ORIGIN` | `*` | `Access-Control-Allow-Origin` value |
 
-Guard rails (also in `src/config.py`): expression length 鈮?200 characters,
-鈮?256 tokens, nesting depth 鈮?64, `fact()` argument 鈮?170, result magnitude
-鈮?1e308, request body 鈮?64 KiB.
+Guard rails (also in `src/config.py`): expression length ≤ 200 characters,
+≤ 256 tokens, nesting depth ≤ 64, `fact()` argument ≤ 170, result magnitude
+≤ 1e308, request body ≤ 64 KiB.
 
 ## 7. API
 
@@ -203,13 +205,13 @@ curl -X POST http://127.0.0.1:8000/api/convert/base -H "Content-Type: applicatio
 
 | Feature | Examples |
 | --- | --- |
-| Arithmetic | `+` `-` `*` `/` `%` (also accepts `脳` `梅` `鈭抈) |
-| Precedence & parentheses | `1+2*3` 鈫?7, `(1+2)*3` 鈫?9 |
+| Arithmetic | `+` `-` `*` `/` `%` (also accepts `×` `÷` `−`) |
+| Precedence & parentheses | `1+2*3` → 7, `(1+2)*3` → 9 |
 | Unary signs | `-5+8`, `3*-2`, `2^-3`, `--5` |
 | Decimals & exponents | `1.5*4`, `.5+.5`, `1e3+1` |
 | Power / factorial | `2^10`, `2**10`, `5!`, `fact(6)`, `pow(2,10)` |
 | Functions | `sqrt` `abs` `sin` `cos` `tan` `asin` `acos` `atan` `ln` `log` `log2` `exp` `floor` `ceil` `round` `min` `max` `pow` `fact` |
-| Constants | `pi`, `e`, `tau` (also `蟺`) |
+| Constants | `pi`, `e`, `tau` (also `π`) |
 
 `log(x)` is base 10; `log(x, b)` uses an explicit base. Trigonometric functions
 work in radians. `%` follows Python semantics for negative operands.
@@ -219,7 +221,7 @@ work in radians. `%` follows Python semantics for negative operands.
 The front end is a separate project and talks to this service over HTTP; it is
 not served by this service. Two supported setups:
 
-1. **Recommended** 鈥?serve the front-end folder with any static server and set
+1. **Recommended** — serve the front-end folder with any static server and set
    its API base URL to this backend:
 
    ```bash
@@ -229,10 +231,10 @@ not served by this service. Two supported setups:
    cd ../832401322_calculator_backend  && python run.py
    ```
 
-   In the front end, `src/js/config.js` 鈫?`API_BASE_URL` must be
+   In the front end, `src/js/config.js` → `API_BASE_URL` must be
    `http://127.0.0.1:8000`.
 
-2. **Opened from disk** (`file://`) 鈥?also works, because the API sends
+2. **Opened from disk** (`file://`) — also works, because the API sends
    `Access-Control-Allow-Origin: *` and answers `OPTIONS` preflight requests.
 
 When the backend is stopped, the front end still renders and accepts button
@@ -251,10 +253,53 @@ The suite covers the four assignment features (basic calculation, compound
 expressions, history storage, history deletion) plus error handling, protocol
 behaviour and a check that `eval`/`exec` never appear in the calculation module.
 
-## 10. Deployment notes
+## 10. Deployment
 
-* Bind to `0.0.0.0` (`python run.py --host 0.0.0.0 --port 8080`) behind a reverse
-  proxy, or run it as a systemd service / Windows scheduled task.
-* Point `CALC_DB_PATH` at a persistent volume so history survives restarts.
-* For a public demo, the repository can be deployed as-is on any host that runs
-  Python 3.10+ (Render, Railway, PythonAnywhere, a VPS, 鈥?.
+### 10.1 One command on a Linux server
+
+The repository ships `deploy/deploy.sh`, a commented POSIX shell script that
+installs git and Python when needed, clones both projects, registers two systemd
+services, opens the local firewall and prints the public URLs:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/Lip666-dev/832401322_calculator_backend/main/deploy/deploy.sh | sudo sh
+```
+
+Ports and the public address can be passed as environment variables:
+
+```sh
+curl -fsSL .../deploy/deploy.sh | sudo PUBLIC_IP=203.0.113.10 FRONTEND_PORT=8080 sh
+```
+
+Read the script before piping it into a shell - it is short and every step is
+commented. When it finishes:
+
+* front end: `http://<public-ip>:8080/` (redirects to `src/index.html`)
+* back end: `http://<public-ip>:8000/api/health`
+
+Open **both** ports in the cloud provider's security group as well; a service
+that listens locally is still unreachable when the security group blocks it.
+
+### 10.2 Manual deployment
+
+```bash
+git clone https://github.com/Lip666-dev/832401322_calculator_backend.git
+cd 832401322_calculator_backend
+python3 run.py --host 0.0.0.0 --port 8000 &                     # JSON API
+
+git clone https://github.com/Lip666-dev/832401322_calculator_frontend.git
+cd 832401322_calculator_frontend
+python3 -m http.server 8080 --bind 0.0.0.0 &                     # static front end
+```
+
+The front end derives the API address from its own address, so an HTTP page
+served from `http://203.0.113.10:8080/` automatically talks to
+`http://203.0.113.10:8000` - a self-hosted deployment needs no editing.
+
+### 10.3 Other platforms
+
+* Put the API behind nginx or Caddy when you own a domain and want HTTPS, and set
+  `CALC_DB_PATH` to a persistent volume so history survives restarts.
+* Any host running Python 3.8+ works (Render, Railway, a VPS, ...). A browser
+  blocks plain-HTTP API calls made from an HTTPS page, so a hosted front end must
+  be pointed at an HTTPS back end with `?api=https://...`.

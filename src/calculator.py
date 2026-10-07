@@ -36,7 +36,7 @@ from __future__ import annotations
 import math
 import re
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Sequence, Tuple
+from typing import Callable, Dict, List, Sequence, Tuple, Union
 
 from .config import Settings
 from .errors import (
@@ -136,7 +136,11 @@ class CallNode:
     position: int
 
 
-Node = NumberNode | ConstantNode | UnaryNode | BinaryNode | CallNode
+# ``Union`` instead of the ``X | Y`` syntax: this alias is evaluated at run time,
+# so using PEP 604 here would raise the minimum interpreter version to 3.10 for
+# no benefit.  Everything else relies on ``from __future__ import annotations``
+# and therefore also runs on Python 3.8.
+Node = Union[NumberNode, ConstantNode, UnaryNode, BinaryNode, CallNode]
 
 
 @dataclass(frozen=True)
@@ -228,7 +232,7 @@ CONSTANTS: Dict[str, float] = {
     "tau": math.tau,
 }
 
-Number = float | int
+Number = Union[float, int]
 BuiltinFunction = Callable[[Sequence[Number], Settings], Number]
 
 
