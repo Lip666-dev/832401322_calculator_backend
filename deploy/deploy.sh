@@ -29,6 +29,11 @@ INSTALL_DIR="${INSTALL_DIR:-/opt/832401322_calculator}"
 BACKEND_PORT="${BACKEND_PORT:-8000}"
 FRONTEND_PORT="${FRONTEND_PORT:-8080}"
 PUBLIC_IP="${PUBLIC_IP:-}"
+# Clone source.  Inside mainland China github.com is sometimes slow or blocked;
+# point REPO_BASE at a mirror in that case, for example:
+#   REPO_BASE=https://gitclone.com/github.com/Lip666-dev
+#   REPO_BASE=https://ghproxy.net/https://github.com/Lip666-dev
+REPO_BASE="${REPO_BASE:-https://github.com/$REPO_OWNER}"
 
 log() { printf '\n==> %s\n' "$*"; }
 warn() { printf '    ! %s\n' "$*"; }
@@ -69,14 +74,19 @@ log "using $("$PY" --version 2>&1) at $PY_PATH"
 # --- 3. sources ------------------------------------------------------------
 mkdir -p "$INSTALL_DIR"
 for part in backend frontend; do
-    url="https://github.com/$REPO_OWNER/${STUDENT_ID}_calculator_$part.git"
+    url="$REPO_BASE/${STUDENT_ID}_calculator_$part.git"
     dir="$INSTALL_DIR/$part"
     if [ -d "$dir/.git" ]; then
         log "updating the $part checkout"
         git -C "$dir" pull --ff-only || warn "could not fast-forward $part, keeping the local copy"
     else
-        log "cloning $part"
-        git clone --depth 1 "$url" "$dir"
+        log "cloning $part from $url"
+        if ! git clone --depth 1 "$url" "$dir"; then
+            fail "could not clone $url
+    Inside mainland China github.com is sometimes unreachable from a server.
+    Re-run with a mirror, for example:
+        curl -fsSL <script-url> | sudo REPO_BASE=https://gitclone.com/github.com/$REPO_OWNER sh"
+        fi
     fi
 done
 
